@@ -30,6 +30,9 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json({ limit: "50mb" }));
 
+const path = require('path')
+app.use('/', express.static(path.join(__dirname, 'dist')))
+
 // IMPORTING ROUTES
 const vehicleRoutes = require("./routes/vehicles");
 const serviceRoutes = require("./routes/services");
@@ -40,9 +43,6 @@ app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/services", serviceRoutes);
 app.use("/api/bills", billRoutes);
 
-// app.get('/', (req, res) => {
-//     res.render(index)
-// })
 
 app.get('*', (req, res) => {
     res.status(404).send("Something went wrong!")
