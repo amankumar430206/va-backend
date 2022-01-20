@@ -30,12 +30,6 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json({ limit: "50mb" }));
 
-// setting up public directory
-const path = require('path')
-app.use('/static', express.static(path.join(__dirname, 'public')))
-
-app.use(express.static('dist'))
-
 // IMPORTING ROUTES
 const vehicleRoutes = require("./routes/vehicles");
 const serviceRoutes = require("./routes/services");
