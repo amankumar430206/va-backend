@@ -1,0 +1,8 @@
+{
+    "jwtPrivateKey" : "opjunleaveappprivatekey",  
+    "_db" : {
+        "local":"mongodb://localhost/va_db",
+        "remote" : "mongodb+srv://va_admin:va_admin@va1.bymcy.mongodb.net/va_db?retryWrites=true&w=majority"
+        
+    }
+}
