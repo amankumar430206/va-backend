@@ -68,10 +68,10 @@ else {
     // Workers can share any TCP connection
     // establishing the server on the port 3000
     const port = process.env.PORT || 3000;
-    const IP = process.env.IP || 'localhost';
+    const IP = process.env.IP;
     server.listen(port, IP, () => {
         console.log(
-            `Client Server Started Processs ${process.pid} :: http://${IP}:${port} `
+            `Client Server Started Processs ${process.pid} :: PORT :${port} `
         );
     });
 }
