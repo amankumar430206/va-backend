@@ -9,9 +9,9 @@ const VehicleSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    serviceDate: {
-        type: Date,
-        default: Date.now()
+    vehicleModel: {
+        type: String,
+        trim: true,
     },
 }, { timestamps: true });
 

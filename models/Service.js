@@ -25,6 +25,18 @@ const ServiceSchema = new mongoose.Schema({
     },
     serviceTotal: {
         type: Number,
+    },
+    serviceDate: {
+        type: Date,
+    },
+    serviceType: {
+        type: String,
+        enum: ["RR", "PS"],
+        required: true
+    },
+    vehicleKm: {
+        type: Number,
+        trim: true
     }
 }, { timestamps: true });
 

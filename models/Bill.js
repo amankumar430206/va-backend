@@ -17,6 +17,9 @@ const BillSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
+    billDate: {
+        type: Date
+    }
 }, { timestamps: true });
 
 // VALIDATING STUDENT SCHEMA - ON LOGIN
