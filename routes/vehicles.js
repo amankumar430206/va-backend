@@ -22,42 +22,53 @@ router.post('/addService', async (req, res) => {
     const vehicle = _.pick(req.body, ['vehicleNo', 'vehicleModel']);
 
     /**
-     * CHecks
+     * Checkking
      * -service for new vehicle 
      * -Service for existing vehicle
      */
 
-    let Vehicle = await Vehicles.findOne({ 'vehicleNo': vehicle.vehicleNo })
-    if (!Vehicle) {
-        Vehicle = await new Vehicles(vehicle);
+    try {
+
+        let Vehicle = await Vehicles.findOne({ 'vehicleNo': vehicle.vehicleNo })
+        // if vehicle does't exists regiater the vehicle
+        if (!Vehicle) {
+            Vehicle = await new Vehicles(vehicle);
+        }
+        //  vallidating for 
+        if (!Vehicle.vehicleModel) {
+            Vehicle.vehicleModel = vehicle.vehicleModel
+        }
+
+        // creating new service
+        const service = _.pick(req.body, ['customerName', 'phoneNumber', 'serviceDate', 'serviceType', 'vehicleKm']);
+        let Service = await new Services(service);
+        Service.serviceId = await generateServiceId();
+        Service.vehicle = Vehicle._id;
+
+        // creating bill 
+        const bill = _.pick(req.body, ['billNumber', 'billPhoto', 'billAmount']);
+        let Bill = await new Bills(bill);
+        Service.bill = Bill._id;
+        Service.serviceTotal = Bill.billAmount;
+        Bill.billDate = service.serviceDate;
+
+        // saving Service and Biil
+        Vehicle = await Vehicle.save();
+        Service = await Service.save();
+        Bill = await Bill.save();
+
+        console.log("Bill", Bill)
+
+        res.status(200).json({
+            success: true,
+            vehicle
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(200).json({
+            error
+        })
     }
-    if (!Vehicle.vehicleModel && vehicle.vehicleModel) {
-        Vehicle.vehicleModel = vehicle.vehicleModel
-    }
-
-    // creating new service
-    const service = _.pick(req.body, ['customerName', 'phoneNumber', 'serviceDate', 'serviceType', 'vehicleKm']);
-    let Service = await new Services(service);
-    Service.serviceId = await generateServiceId();
-    Service.vehicle = Vehicle._id;
-
-    // creating bill 
-    const bill = _.pick(req.body, ['billNumber', 'billPhoto', 'billAmount']);
-    let Bill = await new Bills(bill);
-    Service.bill = Bill._id;
-    Service.serviceTotal = Bill.billAmount;
-    Bill.billDate = service.serviceDate;
-
-    console.log(Vehicle)
-    // saving Service and Biil
-    Vehicle = await Vehicle.save();
-    Service = await Service.save();
-    Bill = await Bill.save();
-
-    res.json({
-        success: true,
-        vehicle
-    }).status(200)
 });
 
 async function generateServiceId() {
