@@ -7,7 +7,6 @@ const BillSchema = new mongoose.Schema({
         type: Number,
         trim: true,
         required: true,
-        unique: true
     },
     billPhoto: {
         type: String,
