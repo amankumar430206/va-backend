@@ -48,6 +48,7 @@ router.post('/addService', async (req, res) => {
         // creating bill 
         const bill = _.pick(req.body, ['billNumber', 'billPhoto', 'billAmount']);
         let Bill = await new Bills(bill);
+        // saving service bill
         Service.bill = Bill._id;
         Service.serviceTotal = Bill.billAmount;
         Bill.billDate = service.serviceDate;
