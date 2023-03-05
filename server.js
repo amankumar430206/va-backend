@@ -30,13 +30,20 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json({ limit: "50mb" }));
 
-const path = require('path')
-app.use('/', express.static(path.join(__dirname, 'dist')))
+// const path = require('path')
+// app.use('/', express.static(path.join(__dirname, 'dist')))
 
 // IMPORTING ROUTES
 const vehicleRoutes = require("./routes/vehicles");
 const serviceRoutes = require("./routes/services");
 const billRoutes = require("./routes/bills");
+
+app.get('/', (req, res) => {    
+    res.json({
+        msg : "welcome to va-services",
+        suceess: true
+    }).status(200);
+});
 
 // SETTING UP ROUTES
 app.use("/api/vehicles", vehicleRoutes);
