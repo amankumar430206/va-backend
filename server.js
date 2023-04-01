@@ -58,32 +58,38 @@ app.get("*", (req, res) => {
   res.status(404).send("Something went wrong!");
 });
 
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => {
+  console.log(`Server Started:: PORT :${port} `);
+});
+
 // config cluster for parallel processing
-if (cluster.isMaster) {
-  console.log(`Master ${process.pid} is running`);
+// if (cluster.isMaster) {
+//   console.log(`Master ${process.pid} is running`);
 
-  // Fork workers.
-  for (let i = 0; i < numCPUs; i++) {
-    cluster.fork();
-  }
+//   // Fork workers.
+//   for (let i = 0; i < numCPUs; i++) {
+//     cluster.fork();
+//   }
 
-  // This event is firs when worker died
-  cluster.on("exit", (worker, code, signal) => {
-    console.log(`worker ${worker.process.pid} died`);
-  });
-}
+//   // This event is firs when worker died
+//   cluster.on("exit", (worker, code, signal) => {
+//     console.log(`worker ${worker.process.pid} died`);
+//   });
+// }
 
-// For Worker
-else {
-  // Workers can share any TCP connection
-  // establishing the server on the port 3000
-  const port = process.env.PORT || 3000;
-  const IP = process.env.IP;
-  server.listen(port, IP, () => {
-    console.log(
-      `Client Server Started Processs ${process.pid} :: PORT :${port} `
-    );
-  });
-}
+// // For Worker
+// else {
+//   // Workers can share any TCP connection
+//   // establishing the server on the port 3000
+//   const port = process.env.PORT || 3000;
+//   const IP = process.env.IP;
+//   server.listen(port, IP, () => {
+//     console.log(
+//       `Client Server Started Processs ${process.pid} :: PORT :${port} `
+//     );
+//   });
+// }
 
 module.exports = app;
